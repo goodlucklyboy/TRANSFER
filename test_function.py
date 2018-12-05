@@ -1,21 +1,21 @@
-from make_dataloader import make_CIFFAR10_dataloader
 import torch
+import copy
+import time
+import mmd
+import ResNet
+import make_dataloader as D
+import torch.nn as nn
+import visdom
 import torchvision
-import torchvision.transforms as transforms
-import matplotlib.pyplot as plt
-import numpy as np
-def imshow(img):
-    img = img/2+0.5
-    npimg = img.numpy()
-    plt.imshow(np.transpose(npimg,(1,2,0)))
-    plt.show()
-classes = ('plane','car','bird','cat','deer','dog','frog','horsr','ship','truck')
-train_loader,test_loader=make_CIFFAR10_dataloader(4)
-dataiter = iter(train_loader)
-images,labels = dataiter.next()
-imshow(torchvision.utils.make_grid(images))
-print(labels)
-print(''.join('%s'%classes[labels[j]] for j in range(4)))
-print(classes[1])
-print(len(train_loader),len(test_loader))
-print('finished')
+from torch.autograd import Variable
+import torch.optim as optim
+root_path = "./data/7_office/"
+source_path = "amazon"
+target_path = "dslr"
+batch_size = 64
+epoch_num = 1000
+source_data_loader = D.make_data_loader(root_path+source_path)
+target_data_loader = D.make_data_loader(root_path+target_path)
+len_source_loader = len(source_data_loader)
+len_target_loader = len(target_data_loader)
+print(len_source_loader,len_target_loader)
